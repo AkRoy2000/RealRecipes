@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="RealRecipes.Views.TodoitemPage"
+    Title="{Binding Name}"
+    Shell.PresentationMode="ModalAnimated">
+
+    <NavigationPage.TitleView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="itemTitle" Grid.Column="0" TextColor="White" VerticalTextAlignment="Center" FontSize="18" FontFamily="Inter-Regular"/>
+
+            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" Spacing="10">
+                <ImageButton HorizontalOptions="Start" Source="saveitem.png" Clicked="OnSaveClicked" HeightRequest="25"/>
+                <ImageButton HorizontalOptions="End" Source="settingswhite.png" Clicked="OpenMenu2" HeightRequest="30"/>
+            </HorizontalStackLayout>
+
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Always">
+            <StackLayout Margin="20" Spacing="20" VerticalOptions="StartAndExpand">
+
+                <StackLayout>
+                    <StackLayout>
+                        <HorizontalStackLayout Spacing="10">
+                            <Label FontSize="20" Text="Recipe" FontAttributes="Bold" FontFamily="Inter-SemiBold" />
+                            <Image Source="todo.png" Aspect="AspectFit" HeightRequest="30" WidthRequest="{OnPlatform iOS=20}"/>
+                        </HorizontalStackLayout>
+
+                        <Frame Style="{DynamicResource ToDoItemFrame}" Padding="7" Margin="0,10,0,0" HorizontalOptions="FillAndExpand" CornerRadius="10">
+                            <StackLayout>
+                                <Entry x:Name="NameField" Margin="0,0,0,0" Placeholder="Recipe name" Text="{Binding Name}" FontFamily="Inter-Regular"
+                                    PlaceholderColor="Gray" ReturnType="Next"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontSize="20" Text="Ingredients" FontFamily="Inter-SemiBold" />
+                        <Image Source="ingredients.png" Aspect="AspectFit" HeightRequest="30" WidthRequest="{OnPlatform iOS=20}"/>
+                    </HorizontalStackLayout>
+
+                    <Frame Style="{DynamicResource ToDoItemFrame}" Padding="5" Margin="0,10,0,0" HorizontalOptions="FillAndExpand" CornerRadius="10">
+                        <Entry x:Name="IngField" FontFamily="Inter-Regular" Placeholder="Recipe Ingredients" Text="{Binding Ingredients}"
+                           HeightRequest="50" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" PlaceholderColor="Grey" />
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label FontSize="20" Text="Method" FontFamily="Inter-SemiBold" />
+                        <Image Source="method.png" Aspect="AspectFit" HeightRequest="30" WidthRequest="{OnPlatform iOS=20}"/>
+                    </HorizontalStackLayout>
+
+                    <Frame Style="{DynamicResource ToDoItemFrame}" Padding="5" Margin="0,10,0,0" HorizontalOptions="FillAndExpand" CornerRadius="10">
+                        <Editor x:Name="MethodField" FontFamily="Inter-Regular" Placeholder="Recipe Methods" Text="{Binding Method}"
+                        HeightRequest="100" HorizontalTextAlignment="Start" VerticalTextAlignment="Start" PlaceholderColor="Grey" />
+                    </Frame>
+                </StackLayout>
+
+
+                <StackLayout>
+                    <HorizontalStackLayout Spacing="15">
+                        <Label FontSize="20" Text="Image" FontAttributes="Bold" FontFamily="Inter-SemiBold" />
+                        <Image Source="attachment.png" Aspect="AspectFit" HeightRequest="30" WidthRequest="{OnPlatform iOS=20}"/>
+                    </HorizontalStackLayout>
+
+                    <Frame Style="{DynamicResource ToDoItemFrame}" Padding="7" Margin="0,10,0,0" HorizontalOptions="FillAndExpand" CornerRadius="10">
+
+                        <StackLayout>
+                            <!--Attachment Image-->
+                            <Image x:Name="attachmentImage" Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+
+                            <Label x:Name="imagelabel" Text="No Image found." FontFamily="Inter-Regular"
+                                   FontSize="15" TextColor="{AppThemeBinding Dark=Gray, Light=DarkGray}" HorizontalTextAlignment="Center" Margin="15,0,15,0"/>
+
+                            <Button Text="Delete Image" Clicked="DeleteImageClicked" FontFamily="Inter-Regular" BackgroundColor="Red" TextColor="White"
+                                MaximumWidthRequest="{OnPlatform iOS=150, Android=200}" HorizontalOptions="Center" Margin="0,15,0,10" />
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

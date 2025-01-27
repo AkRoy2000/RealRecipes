@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:RealRecipes.Views"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    x:Class="RealRecipes.Views.TodoListPage"
+    x:Name="todoListPage"
+    Title="Home"
+    Shell.PresentationMode="ModalAnimated">
+
+    <NavigationPage.TitleView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labeltitle" Grid.Column="0" TextColor="White" VerticalOptions="Center" FontFamily="Inter-Regular"
+                   VerticalTextAlignment="Center" FontSize="16" HorizontalOptions="Start"/>
+            <ImageButton Grid.Column="2" Source="trash.png" WidthRequest="30" HeightRequest="25" Clicked="DeleteSelectedItems"/>
+            <ImageButton Grid.Column="3" Source="icon.png" WidthRequest="30" HeightRequest="25" Clicked="OnItemAdded"/>
+            <ImageButton Grid.Column="4" Source="settingswhite.png" WidthRequest="30" Clicked="OpenMenu"/>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <Grid BackgroundColor="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Frame x:Name="SearchContainer" HeightRequest="45" Grid.Row="1" Margin="5" Padding="5" Style="{StaticResource CustomFrame}" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Search Bar -->
+                <SearchBar HorizontalOptions="StartAndExpand" Grid.Row="0" Grid.Column="0" Placeholder="Search for Recipe name..." x:Name="SearchBar"
+                           ios:SearchBar.SearchBarStyle="Minimal" TextChanged="SearchBar_TextChangedAsync"/>
+            </Grid>
+        </Frame>
+
+        <VerticalStackLayout x:Name="VStack" Grid.RowSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+            <Image Source="book" Aspect="AspectFit" WidthRequest="100" HeightRequest="100" Margin="0,0,0,30"/>
+            <Label Text="No recipes yet, Create a recipe by tapping on +" HorizontalTextAlignment="Center" FontFamily="Inter-Regular" FontSize="14"/>
+            <Label Text="Or generate some sample data in settings" HorizontalTextAlignment="Center" FontSize="14" FontFamily="Inter-Regular"/>
+        </VerticalStackLayout>
+
+        <ListView x:Name="listView" Grid.Row="2" Margin="10" ItemSelected="OnListItemSelected" RowHeight="115" SeparatorVisibility="None"
+                  CachingStrategy="RecycleElement" BackgroundColor="{AppThemeBinding Light={DynamicResource White}, Dark={DynamicResource Black}}" IsPullToRefreshEnabled="True" Refreshing="RefreshView_Refreshing">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Border Padding="5,0,0,0" Margin="5">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="{OnPlatform Android=30}" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="{OnPlatform Android=120}" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Spacing="5">
+                                    <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Margin="15,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="End"
+                                       Text="{Binding Name}" LineBreakMode="TailTruncation" FontSize="20" FontFamily="Inter-Bold" />
+                                </HorizontalStackLayout>
+
+                                <Label Grid.ColumnSpan="5" Grid.Row="1" Grid.Column="1" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation"
+                                       Margin="15,2,0,0" VerticalOptions="Start" FontSize="Body" WidthRequest="250"
+                                       Text="{Binding Ingredients}" FontFamily="Inter-Regular" />
+
+                                <Frame Grid.Row="2" Grid.Column="1" WidthRequest="55" HeightRequest="25" Padding="0"
+                                       BackgroundColor="{AppThemeBinding Dark=DarkGray, Light={StaticResource DarkGH}}" IsVisible="{Binding HasImage}">
+                                    <Image Source="attachment.png" Aspect="AspectFit" HeightRequest="50" WidthRequest="15"/>
+                                </Frame>
+
+                                <CheckBox Grid.Row="1" Grid.Column="0" Margin="-6,0,0,0" x:Name="SelectedBox" IsChecked="{Binding IsSelected}" Focused="OnCheckBoxChecked" Unfocused="OnCheckBoxUnchecked"/>
+                            </Grid>
+                        </Border>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>
